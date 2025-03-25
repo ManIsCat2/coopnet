@@ -55,7 +55,7 @@ std::string getExecutablePath() {
         return std::string(path);
     }
 #elif defined(__linux__)
-    ssize_t len = readlink("/proc/self/exe", path, sizeof(path) - 1);
+    ssize_t len = readlink("/proc/self/exe", path, sizeof(path) - 1); //returns path to libmain.so on android
     if (len != -1) {
         path[len] = '\0';
         return std::string(path);

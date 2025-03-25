@@ -3,6 +3,10 @@
 #include "utils.hpp"
 #include "logging.hpp"
 
+#ifndef _WIN32
+#include <sys/select.h>
+#endif
+
 Client* gClient = NULL;
 
 Client::~Client() {

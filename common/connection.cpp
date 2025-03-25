@@ -85,12 +85,14 @@ void Connection::Receive() {
     // limit the buffer to the available amount
     SocketLimitBuffer(mSocket, &remaining);
 
-#ifdef OSX_BUILD
+#if defined(OSX_BUILD) || defined(__unix__)
+#ifndef __linux__
     // OSX seems to return errno 0, size 0 on recv() when there is nothing to receive.
     // This causes the socket to think the connection is closed...
     // So instead, we'll just not call it if there is no data available.
     // The side effect of this is that we will not detect connection drops very quickly.
     if (remaining <= 0) { return; }
+#endif
 #endif
 
     // receive from socket

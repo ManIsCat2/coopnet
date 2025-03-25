@@ -3,6 +3,7 @@
 #################
 
 OSX_BUILD ?= 0
+ANDROID_BUILD ?= 0
 LOGGING ?= 0
 
 #################
@@ -41,6 +42,9 @@ else ifeq ($(OSX_BUILD),1)
   DYNLIB_NAME := libcoopnet.dylib
   LIBS := -l juice
   LDFLAGS += -rpath . -dynamiclib -install_name @rpath/$(DYNLIB_NAME)
+else ifeq ($(ANDROID_BUILD),1)
+  CXXFLAGS += -DANDROID_BUILD=1 -DTARGET_ANDROID=1
+  LIB_DIR := ./lib/android
 else
   CXXFLAGS += -Wno-nonnull-compare
   LIB_DIR := lib/linux
