@@ -1,3 +1,7 @@
+#ifdef OSX_BUILD
+#include <mach-o/dyld.h>
+#endif
+
 #include <stdexcept>
 #include <string>
 #include <ctime>
