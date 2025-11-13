@@ -5,7 +5,18 @@
 OSX_INTEL ?= 0
 OSX_ARM ?= 0
 OSX_BUILD ?= 0
+ANDROID_BUILD ?= 0
 LOGGING ?= 0
+
+ifneq ($(shell uname -m | grep "i.86"),)
+  ARCH_APK := x86
+else ifeq ($(shell uname -m),x86_64)
+  ARCH_APK := x86_64
+else ifeq ($(shell getconf LONG_BIT),64)
+  ARCH_APK := arm64-v8a
+else
+  ARCH_APK := armeabi-v7a
+endif
 
 #################
 
@@ -52,6 +63,9 @@ else
     DYNLIB_NAME := libcoopnet.dylib
     LIBS := -l juice.1.6.2
     LDFLAGS += -rpath . -dynamiclib -install_name @rpath/$(DYNLIB_NAME)
+  else ifeq ($(ANDROID_BUILD),1)
+    CXXFLAGS += -DANDROID_BUILD=1 -DTARGET_ANDROID=1
+    LIB_DIR := ./lib/android/$(ARCH_APK)
   else
     CXXFLAGS += -Wno-nonnull-compare
     LIB_DIR := lib/linux
